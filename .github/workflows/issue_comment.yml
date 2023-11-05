@@ -32,14 +32,17 @@ jobs:
       - name: Setup workflow variables
         id: workflow-vars
         shell: bash
+        env:
+          GITHUB_FEATURE_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_FEATURE_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
       - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
-          echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "BRANCH: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "GITHUB REF: ${GITHUB_REF}"
 
       - name: Install nodejs
         uses: actions/setup-node@v3
@@ -71,14 +74,17 @@ jobs:
       - name: Setup workflow variables
         id: workflow-vars
         shell: bash
+        env:
+          GITHUB_FEATURE_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_FEATURE_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
       - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
-          echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "BRANCH: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "GITHUB REF: ${GITHUB_REF}"
 
       - name: Deploy for review
         if: ${{ contains(github.event.comment.body, '/review') }}
